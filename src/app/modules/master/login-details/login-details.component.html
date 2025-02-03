@@ -1,0 +1,96 @@
+<app-master-sub-header></app-master-sub-header>
+
+<div class="navbar2 mt-2">
+  <div>
+    <h2 style="margin-left: 10px;">Login Details</h2>
+  </div>
+  <mat-form-field class="filter">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search Here...." #input>
+  </mat-form-field>
+</div>
+
+<div class="table-container mat-elevation-z8 ">
+    <table mat-table [dataSource]="dataSource" matSort >
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef class="actionheader" style="width: 50px">
+        <mat-checkbox
+          (change)="$event ? toggleAllRows() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()"
+        >
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 50px">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+          [aria-label]="checkboxLabel(row)"
+        >
+        </mat-checkbox>
+      </td>
+   </ng-container>
+
+      <ng-container matColumnDef="userName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
+        <td mat-cell *matCellDef="let row"> {{ row.userName }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let row"> {{ row.email }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phoneNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
+        <td mat-cell *matCellDef="let row"> {{ row.phoneNumber}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name </th>
+        <td mat-cell *matCellDef="let row"> {{ row.fullName }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="empRegId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Emp RegId </th>
+        <td mat-cell *matCellDef="let row"> {{ row.empRegId}} </td>
+      </ng-container>
+      <ng-container matColumnDef="isActive">
+        <th mat-header-cell *matHeaderCellDef> Active </th>
+        <td mat-cell *matCellDef="let row">
+          <span *ngIf="row.isActive" class="badge badge-success">True</span>
+          <span *ngIf="!row.isActive" class="badge rounded-pill badge-danger">False</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actionheader"> Actions </th>
+        <td mat-cell *matCellDef="let row" class="action-cell">
+          <span style="text-decoration: none;">
+            <div mdbDropdown class="dropdown dropx">
+              <a role="button" id="dropdownMenuLink" mdbDropdownToggle
+                style="width:4px; height: 10px; color: black; border-radius: 0px; padding:0px 30px">
+                <i class="fas fa-ellipsis-v fa-1.8x  ico"
+                  style="margin-bottom: 0px; z-index: 999; margin-left:0px;margin-right:20px" id="icox"></i> </a>
+              <ul mdbDropdownMenu class="dropdown-menu" style="margin-left: 30px;">
+                <li ><a class="dropdown-item"><i class="fa-solid fa-pen-to-square"></i>
+                    Edit
+                  </a></li>
+                <li ><a class="dropdown-item"><i class="fas fa-trash"></i>
+                    Delete</a></li>
+              </ul>
+            </div>
+          </span>
+        </td>
+        <td mat-cell></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <mat-paginator class="paginator" [pageSizeOptions]="[7, 10, 25, 100]"
+    aria-label="Select page of users"></mat-paginator>
